@@ -13,39 +13,16 @@
 
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', function($api) {
-	$api->get('version', function() {
-		return response('this is version v1');
-	});
-});
+$api->version('v1', ['namespace' => 'App\Http\Controllers\Api'
 
-$api->version('v2', function($api) {
-	$api->get('version', function() {
-		return response('this is version v2');
-	});
+], function($api) {
+	$api->get('sayHello', 'UserController@sayHello');
 });
 
 $api->version('v1', [
 	'namespace' => 'App\Http\Controllers\Api'
 ],function($api) {
 
-	$api->group([
-		'middleware' => 'api.throttle',
-		'limit' => 1,
-		'expires' => 1,
-	],function($api){
-		$api->get('sayHello', 'DemoController@sayHello');
-	});
-
-	$api->post('authorizations/login', 'AuthorizationsController@login');
-
-	$api->group([
-		'middleware' => 'auth:api',
-	],function ($api){
-		$api->post('authorizations/me', 'AuthorizationsController@me');
-		$api->put('authorizations/refresh', 'AuthorizationsController@refresh');
-	});
-
-	$api->delete('authorizations/destroy', 'AuthorizationsController@destroy');
-	$api->post('sayPost', 'DemoController@sayPost');
+	$api->post('authorization/login', 'AuthorizationController@login');
+	$api->delete('authorization/destroy', 'AuthorizationController@destroy');
 });
