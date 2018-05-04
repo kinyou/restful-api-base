@@ -28,7 +28,7 @@ $api->version('v1', [
 	$api->delete('authorization/destroy', 'AuthorizationController@destroy');
 
 	//自动刷新token
-	$api->group(['middleware'=>'refresh.token'],function($api){
+	//$api->group(['middleware'=>'refresh.token'],function($api){
 		$api->get('user', 'UserController@index');
-	});
+	//});
 });
