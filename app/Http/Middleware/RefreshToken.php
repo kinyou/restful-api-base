@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -32,7 +31,6 @@ class RefreshToken extends BaseMiddleware
                 return $next($request);
             }
 
-            throw new UnauthorizedHttpException('jwt-auth','no login');
         } catch (TokenExpiredException $exception) {
             //如果用户token过期,自动刷新token
             $token = $this->refresh();
@@ -54,9 +52,7 @@ class RefreshToken extends BaseMiddleware
         try{
             //刷新用户的token
             $token = $this->auth->refresh();
-            //使用一次性登陆保证此次请求的成功
-            //$this->auth->manager()->getPayloadFactory()->buildClaimsCollection()->toPlainArray()['sub'] 这个会拿到用户的id
-            Auth::guard('api')->onceUsingId($this->auth->manager()->getPayloadFactory()->buildClaimsCollection()->toPlainArray()['sub']);
+
         } catch (JWTException $exception) {
             //如果捕获到异常说明,refresh 也过期,此时要重新登录
             throw new UnauthorizedHttpException('jwt-auth', $exception->getMessage(), $exception, $exception->getCode());
