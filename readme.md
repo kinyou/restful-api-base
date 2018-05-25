@@ -3,7 +3,7 @@
 restful-api-base 是一个基于laravel5.5框架为基准创建的一个快速开发api接口的骨架程序.
 
 - 快速开发api接口.
-- [整合dingo/api开发包,用于api的版本控制,限流,api文档快速生成](https://github/dingo/api).
+- [整合dingo/api开发包,用于api的版本控制,限流,api文档快速生成](https://github.com/dingo/api).
 - [整合tymondesigns/jwt-auth开发包,用于生成token认证请求api接口](https://github.com/tymondesigns/jwt-auth).
 - 整合自定义的自动刷新token中间件.
 - Laravel友好的单元测试.
