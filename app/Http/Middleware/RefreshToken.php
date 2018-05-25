@@ -31,10 +31,11 @@ class RefreshToken extends BaseMiddleware
                 return $next($request);
             }
 
+            throw new UnauthorizedHttpException('jwt-auth','no login');
+
         } catch (TokenExpiredException $exception) {
             //如果用户token过期,自动刷新token
             $token = $this->refresh();
-            logger('---------token过期---------');
         }
 
         //在响应头中返回新的token
