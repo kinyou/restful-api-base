@@ -27,7 +27,7 @@ class UserController extends ApiController
      * @Versions({"v1"})
      * @Request({})
      * @Response(200, body={
-     *     "users":
+     *     "data":
      *     {
      *         {
      *          "id":1,
@@ -52,10 +52,8 @@ class UserController extends ApiController
     {
         $users = User::all();
 
-
-        return $this->response->array([
-            'users'=>$users
-        ]);
+        return $this->respondWithSuccess($users);
+        
     }
 
     /**
@@ -71,9 +69,7 @@ class UserController extends ApiController
      */
     public function sayHello()
     {
-        return $this->response->array([
-            'message'=>'sayHello'
-        ]);
+        return $this->respondWithSuccess('sayHello');
     }
 
 }
