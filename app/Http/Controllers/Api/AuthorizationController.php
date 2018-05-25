@@ -56,7 +56,7 @@ class AuthorizationController extends ApiController
 	 *
 	 * @return \Dingo\Api\Http\Response
 	 */
-	public function destroy()
+	public function logout()
 	{
 		Auth::guard('api')->logout();
 

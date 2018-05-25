@@ -24,8 +24,19 @@
     </filter>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
     </php>
+
+    <logging>
+        <log type="coverage-html" target="./build/report" lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-clover" target="./build/coverage.xml"/>
+        <log type="coverage-php" target="./build/coverage.serialized"/>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+        <log type="junit" target="./build/logfile.xml" logIncompleteSkipped="false"/>
+        <log type="testdox-html" target="./build/testdox.html"/>
+        <log type="testdox-text" target="./build/testdox.txt"/>
+    </logging>
 </phpunit>
