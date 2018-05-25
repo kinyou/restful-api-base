@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         //注册统一接管用户自定义的响应
-        app('Dingo\Api\Exception\Handler')->register(function(\Exception $restfulException){
+        app('Dingo\Api\Exception\Handler')->register(function(RestfulException $restfulException){
             $code = $restfulException->getCode() ?: Response::HTTP_INTERNAL_SERVER_ERROR;
             return $this->respondWithError($restfulException->getMessage(),$code);
         });
