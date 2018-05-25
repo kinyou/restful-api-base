@@ -25,7 +25,7 @@ $api->version('v1', [
 ],function($api) {
 
 	$api->post('authorization/login', 'AuthorizationController@login');
-	$api->delete('authorization/destroy', 'AuthorizationController@destroy');
+	$api->delete('authorization/logout', 'AuthorizationController@logout');
 
 	//自动刷新token
 	//$api->group(['middleware'=>'refresh.token'],function($api){
