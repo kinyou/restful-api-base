@@ -23,6 +23,7 @@ restful-api-base 是一个基于laravel5.5框架为基准创建的一个快速�
 - 生成测试数据:   php artisan db:seed
 - 查看路由:  php artisan api:routes
 - 生成api接口说明文档:  php artisan api:docs --name apidoc --use-version v1 --output-file apidoc.md -vvv
+- 运行phpunit单元测试生成代码覆盖率: ./vendor/bin/phpunit
 - 使用postman测试相关接口
 
 ## 备注说明
