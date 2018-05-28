@@ -31,7 +31,7 @@ class RefreshToken extends BaseMiddleware
                 return $next($request);
             }
 
-            throw new UnauthorizedHttpException('jwt-auth','no login');
+            throw new UnauthorizedHttpException('jwt-auth','User not found');
 
         } catch (TokenExpiredException $exception) {
             //如果用户token过期,自动刷新token
