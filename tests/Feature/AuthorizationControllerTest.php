@@ -15,6 +15,8 @@ class AuthorizationControllerTest extends TestCase
 
 
     /**
+     * 登录
+     *
      * @test
      */
     public function user_success_login()
@@ -27,6 +29,8 @@ class AuthorizationControllerTest extends TestCase
     }
 
     /**
+     * 退出
+     *
      * @test
      */
     public function user_success_logout()
@@ -38,5 +42,35 @@ class AuthorizationControllerTest extends TestCase
             ->json('DELETE','/api/authorization/logout');
         
         $response->assertStatus(200)->assertSeeText('success');
+    }
+
+    /**
+     * 使用错误用户密码登录
+     *
+     * @test
+     */
+    public function user_login_use_error_password()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->json('POST','/api/authorization/login',['name'=>$user->name,'password'=>'1234567']);
+
+        $response->assertStatus(200)->assertExactJson(['data'=>['message'=>'用户名或者密码错误'],'code'=>422]);
+    }
+
+    /**
+     * 刷新token
+     *
+     * @test
+     */
+    public function refresh_token_use_old_token()
+    {
+        $user = factory(User::class)->create();
+        $token = Auth::guard('api')->fromUser($user);
+
+        $response = $this->withHeaders(['Authorization'=>'Bearer ' . $token])
+            ->json('PUT','/api/authorization/refresh');
+        
+        $response->assertStatus(200)->assertSeeText($user->name);
     }
 }
