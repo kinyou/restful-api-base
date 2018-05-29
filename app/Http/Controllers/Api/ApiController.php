@@ -35,26 +35,6 @@ class ApiController extends Controller
         return $this->statusCode;
     }
 
-    /**
-     * 404
-     * @param string $message
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function respondNotFound($message = 'Not Found')
-    {
-        return $this->setStatusCode(404)->respondWithSuccess($message);
-    }
-
-    /**
-     * 服务器内部错误
-     * @param string $message
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function respondInternalError($message = 'Internal Error')
-    {
-        return $this->setStatusCode(500)->respondWithSuccess($message);
-    }
-
 
     /**
      * 成功响应

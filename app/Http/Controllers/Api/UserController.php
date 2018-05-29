@@ -69,7 +69,8 @@ class UserController extends ApiController
      */
     public function sayHello()
     {
-        return $this->respondWithSuccess('sayHello');
+
+        return $this->setStatusCode(200)->respondWithSuccess('sayHello');
     }
 
 }
