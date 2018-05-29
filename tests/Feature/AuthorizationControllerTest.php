@@ -13,6 +13,17 @@ class AuthorizationControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
+    protected $user = null;
+
+    /**
+     * 提取公共的user
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->user = factory(User::class)->create();
+    }
 
     /**
      * 登录
@@ -21,11 +32,10 @@ class AuthorizationControllerTest extends TestCase
      */
     public function user_success_login()
     {
-        $user = factory(User::class)->create();
 
-        $response = $this->json('POST','/api/authorization/login',['name'=>$user->name,'password'=>'123456']);
+        $response = $this->json('POST','/api/authorization/login',['name'=>$this->user->name,'password'=>'123456']);
 
-        $response->assertStatus(200)->assertSeeText($user->name);
+        $response->assertStatus(200)->assertSeeText($this->user->name);
     }
 
     /**
@@ -35,8 +45,7 @@ class AuthorizationControllerTest extends TestCase
      */
     public function user_success_logout()
     {
-        $user = factory(User::class)->create();
-        $token = Auth::guard('api')->fromUser($user);
+        $token = Auth::guard('api')->fromUser($this->user);
 
         $response = $this->withHeaders(['Authorization'=>'Bearer ' . $token])
             ->json('DELETE','/api/authorization/logout');
@@ -51,9 +60,7 @@ class AuthorizationControllerTest extends TestCase
      */
     public function user_login_use_error_password()
     {
-        $user = factory(User::class)->create();
-
-        $response = $this->json('POST','/api/authorization/login',['name'=>$user->name,'password'=>'1234567']);
+        $response = $this->json('POST','/api/authorization/login',['name'=>$this->user->name,'password'=>'1234567']);
 
         $response->assertStatus(200)->assertExactJson(['data'=>['message'=>'用户名或者密码错误'],'code'=>422]);
     }
@@ -65,12 +72,11 @@ class AuthorizationControllerTest extends TestCase
      */
     public function refresh_token_use_old_token()
     {
-        $user = factory(User::class)->create();
-        $token = Auth::guard('api')->fromUser($user);
+        $token = Auth::guard('api')->fromUser($this->user);
 
         $response = $this->withHeaders(['Authorization'=>'Bearer ' . $token])
             ->json('PUT','/api/authorization/refresh');
         
-        $response->assertStatus(200)->assertSeeText($user->name);
+        $response->assertStatus(200)->assertSeeText($this->user->name);
     }
 }
