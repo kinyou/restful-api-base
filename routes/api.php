@@ -33,3 +33,13 @@ $api->version('v1', [
 		$api->get('user', 'UserController@index');
 	//});
 });
+
+//限流测试路由
+$api->version('v1', ['namespace' => 'App\Http\Controllers\Api'
+
+], function($api) {
+	$api->group(['middleware'=>'api.throttle','limit'=>2,'expires'=>1],function($api){
+		$api->get('limit', 'UserController@limit');
+	});
+
+});

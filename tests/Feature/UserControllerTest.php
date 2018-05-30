@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Dingo\Api\Exception\RateLimitExceededException;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Auth;
@@ -41,5 +42,23 @@ class UserControllerTest extends TestCase
             ->json('GET','/api/user');
 
         $response->assertStatus(200)->assertSeeText($user->name);
+    }
+
+    /**
+     * @test
+     */
+    public function rate_limit_request()
+    {
+        $user = factory(User::class)->create();
+        $token = Auth::guard('api')->fromUser($user);
+
+        for($i=0;$i<4;$i++) {
+            $response = $this->withHeaders(['Authorization'=>'Bearer ' . $token])
+                ->json('GET','/api/limit');
+        }
+        //RateLimitExceededException
+
+        $this->assertInstanceOf(RateLimitExceededException::class,new RateLimitExceededException());
+
     }
 }

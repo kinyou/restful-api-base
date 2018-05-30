@@ -73,4 +73,38 @@ class UserController extends ApiController
         return $this->setStatusCode(200)->respondWithSuccess('sayHello');
     }
 
+    /**
+     * 限流路由api测试
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @Get("/limit")
+     * @Versions({"v1"})
+     * @Request({})
+     * @Response(200, body={
+     *     "data":
+     *     {
+     *         {
+     *          "id":1,
+     *          "name":"Alana Durgan",
+     *          "email":"heffertz@example.org",
+     *          "created_at":"2018-04-19 12:25:41",
+     *          "updated_at":"2018-04-19 12:25:41"
+     *         },
+     *         {
+     *           "id": 2,
+     *           "name": "Shany Rippin",
+     *           "email": "krystal.reichel@example.com",
+     *           "created_at": "2018-04-19 12:25:41",
+     *           "updated_at": "2018-04-19 12:25:41"
+     *         }
+     *     },
+     *     "code":200
+     * })
+     */
+    public function limit()
+    {
+        return $this->respondWithSuccess(User::all());
+    }
+
 }
