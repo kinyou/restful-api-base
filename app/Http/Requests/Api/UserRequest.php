@@ -24,9 +24,8 @@ class UserRequest extends FormRequest
     public function rules(Request $request)
     {
         //使用这种模式可以对同一个post请求,有些字段必须有,有些又是可有可无的情况
-        $path = preg_match('/[0-9]+/',$request->path(),$matches) ;
-        logger($matches);
-        $case = $request->method() . '-' . strtoupper(str_replace('/', '-', $request->path()));
+        $path = preg_match('/[0-9]+/',$request->path(),$matches) ? str_replace($matches[0],'',$request->path()) : $request->path();
+        $case = rtrim($request->method() . '-' . strtoupper(str_replace('/', '-', $path)),'-');
 
         switch ($case) {
             case 'POST-API-USER-REGISTER' :
@@ -36,7 +35,11 @@ class UserRequest extends FormRequest
                     'password' => 'required|string|min:6',
                 ];
                 break;
-
+            case 'PUT-API-USER-UPDATE' :
+                return [
+                    'password' => 'required|string|min:6',
+                ];
+                break;
             default:
                 return [];
                 break;

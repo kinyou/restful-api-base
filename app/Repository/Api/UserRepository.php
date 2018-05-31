@@ -72,7 +72,7 @@ class UserRepository {
         foreach($fillable as $field) {
             if (array_key_exists($field,$data)) $filll[$field] = $data[$field];
         }
-        
+
         return $this->user->where(['id'=>$id])->update($filll);
     }
 
