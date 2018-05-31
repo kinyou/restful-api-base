@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Service\Api\UserService;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -12,11 +13,18 @@ use Illuminate\Http\Request;
  */
 class UserController extends ApiController
 {
+    protected $userService;
 
-    public function __construct()
+    /**
+     * UserController constructor.
+     * @param UserService $userService
+     */
+    public function __construct(UserService $userService)
     {
+        $this->userService = $userService;
         $this->middleware('auth:api',['except'=>'sayHello']);
     }
+
 
     /**
      * 显示所有用户
@@ -50,7 +58,7 @@ class UserController extends ApiController
      */
     public function index()
     {
-        $users = User::all();
+        $users = $this->userService->user();
 
         return $this->respondWithSuccess($users);
         
