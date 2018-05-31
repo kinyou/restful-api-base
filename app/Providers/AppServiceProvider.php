@@ -7,6 +7,8 @@ use Dingo\Api\Exception\ValidationHttpException;
 use Dingo\Api\Facade\API;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,6 +21,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (app()->environment() != 'production') {
+            logger('==================== URL: ' . request()->fullUrl() . ' ====================');
+            DB::listen(function(QueryExecuted $queryExecuted) {
+                $executeSql = str_replace(['%','?'],['%%','%s'],$queryExecuted->sql);
+                $bindings = $queryExecuted->connection->prepareBindings($queryExecuted->bindings);
+                $pdo = $queryExecuted->connection->getPdo();
+                logger(vsprintf($executeSql,array_map([$pdo,'quote'],$bindings)));
+            });
+        }
         //更改默认的dingo/api的模型未找到500变为404
         API::error(function(ModelNotFoundException $modelNotFoundException){
             return $this->respondWithError($modelNotFoundException->getMessage(),Response::HTTP_NOT_FOUND);

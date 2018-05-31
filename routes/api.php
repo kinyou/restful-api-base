@@ -32,6 +32,8 @@ $api->version('v1', [
 	//$api->group(['middleware'=>'refresh.token'],function($api){
 		$api->get('user', 'UserController@index');
 	//});
+
+	$api->get('user/{id}','UserController@show');
 });
 
 //限流测试路由

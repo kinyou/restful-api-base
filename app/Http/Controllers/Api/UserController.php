@@ -115,4 +115,12 @@ class UserController extends ApiController
         return $this->respondWithSuccess(User::all());
     }
 
+    public function show($id)
+    {
+       logger($id);
+        $user = $this->userService->userById($id);
+
+        return $this->respondWithSuccess($user);
+    }
+
 }

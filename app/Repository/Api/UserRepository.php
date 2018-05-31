@@ -32,5 +32,16 @@ class UserRepository {
         return $this->user->all();
     }
 
+    /**
+     * 根据用户id查询用户
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function userById($id)
+    {
+        return $this->user->findOrFail($id);
+    }
+
 
 }

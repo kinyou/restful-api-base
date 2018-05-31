@@ -31,4 +31,15 @@ class UserService {
         return $this->userRepository->user();
     }
 
+    /**
+     * 根据用户id查询用户
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function userById($id)
+    {
+        return $this->userRepository->userById($id);
+    }
+
 }
