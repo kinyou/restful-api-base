@@ -217,4 +217,12 @@ class UserController extends ApiController
         return $this->respondWithSuccess($result);
     }
 
+    public function destroy($id)
+    {
+        logger($id);
+        $result = $this->userService->destroy($id);
+
+        return $this->respondWithSuccess($result);
+    }
+
 }

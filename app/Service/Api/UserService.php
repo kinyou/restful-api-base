@@ -72,4 +72,15 @@ class UserService {
         return $this->userRepository->update($data,$id);
     }
 
+    /**
+     * 删除用户
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function destroy(int $id)
+    {
+        return $this->userRepository->destroy($id);
+    }
+
 }

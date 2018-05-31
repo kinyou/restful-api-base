@@ -68,5 +68,19 @@ class UserRepository {
         return $this->user->where(['id'=>$id])->update($data);
     }
 
+    /**
+     * 删除用户
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function destroy(int $id)
+    {
+        $this->user->findOrFail($id);
+
+        return $this->user->destroy($id);
+
+    }
+
 
 }
