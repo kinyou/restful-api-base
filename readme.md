@@ -13,6 +13,7 @@ restful-api-base 是一个基于laravel5.5框架为基准创建的一个快速�
 
 - git clone https://github.com/kinyou/restful-api-base.git
 - cd restful-api-base && cp .env.example .env
+- composer install
 - 修改.env中数据库和dingo/api的相关配置
     - DB_DATABASE=数据库名
     - DB_USERNAME=用户名
