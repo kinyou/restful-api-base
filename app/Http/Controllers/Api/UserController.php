@@ -115,9 +115,38 @@ class UserController extends ApiController
         return $this->respondWithSuccess(User::all());
     }
 
+    /**
+     * 根据用户id获取用户信息
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @Get("/user/1")
+     * @Versions({"v1"})
+     * @Transaction({
+     *    @Request({"id":1}),
+     *    @Response(200, body={
+     *     "data":
+     *     {
+     *        "id":1,
+     *        "name":"Alana Durgan",
+     *        "email":"heffertz@example.org",
+     *        "created_at":"2018-04-19 12:25:41",
+     *        "updated_at":"2018-04-19 12:25:41"
+     *     },
+     *     "code":200
+     *    }),
+     *    @Response(404,body={
+     *       "data":{
+     *          "message":"No query results for model [App\\User] 100"
+     *        },
+     *        "code":404
+     *     })
+     *
+     * })
+     */
     public function show($id)
     {
-       logger($id);
         $user = $this->userService->userById($id);
 
         return $this->respondWithSuccess($user);
