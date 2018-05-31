@@ -43,5 +43,30 @@ class UserRepository {
         return $this->user->findOrFail($id);
     }
 
+    /**
+     * 创建用户
+     *
+     * @param array $data
+     * @return mixed
+     */
+    public function store(array $data)
+    {
+        return $this->user->create($data);
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param array $data
+     * @param int $id
+     * @return bool
+     */
+    public function update(array $data,int $id)
+    {
+        $this->user->findOrFail($id);
+
+        return $this->user->update($data);
+    }
+
 
 }

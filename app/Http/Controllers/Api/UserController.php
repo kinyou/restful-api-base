@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\UserRequest;
 use App\Service\Api\UserService;
 use App\User;
 use Illuminate\Http\Request;
@@ -150,6 +151,59 @@ class UserController extends ApiController
         $user = $this->userService->userById($id);
 
         return $this->respondWithSuccess($user);
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param UserRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @Post("/user/register")
+     * @Versions({"v1"})
+     * @Transaction({
+     *     @Request({"name":"xingyuanwang","email":"wangxy@novastar.tech","password":"123456"}),
+     *    @Response(200, body={
+     *     "data":
+     *     {
+     *        "id":1,
+     *        "name":"xingyuanwang",
+     *        "email":"wangxy@novastar.tech",
+     *        "created_at":"2018-04-19 12:25:41",
+     *        "updated_at":"2018-04-19 12:25:41"
+     *     },
+     *     "code":200
+     *    }),
+     *    @Response(422,body={
+     *       "data":{
+     *          "message": {
+     *               "email":"The email has already been taken.",
+     *               "password": "The password must be at least 6 characters."
+     *                 }
+     *        },
+     *        "code":422
+     *     })
+     * })
+     */
+    public function store(UserRequest $request)
+    {
+        $result = $this->userService->store($request);
+
+        return $this->respondWithSuccess($result);
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param UserRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(UserRequest $request,$id)
+    {
+        $result = $this->userService->update($request,$id);
+
+        return $this->respondWithSuccess($result);
     }
 
 }

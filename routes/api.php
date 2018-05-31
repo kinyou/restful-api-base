@@ -34,6 +34,7 @@ $api->version('v1', [
 	//});
 
 	$api->get('user/{id}','UserController@show');
+	$api->post('user/register','UserController@store');
 });
 
 //限流测试路由
