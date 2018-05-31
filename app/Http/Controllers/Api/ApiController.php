@@ -43,7 +43,7 @@ class ApiController extends Controller
      */
     public function respondWithSuccess($data)
     {
-        if (is_string($data)) $data = ['message'=>$data];
+        if (is_string($data) || is_int($data) || is_bool($data)) $data = ['message'=>$data];
 
         return $this->respond([
             'data'=>$data,

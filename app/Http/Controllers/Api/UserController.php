@@ -162,7 +162,7 @@ class UserController extends ApiController
      * @Post("/user/register")
      * @Versions({"v1"})
      * @Transaction({
-     *     @Request({"name":"xingyuanwang","email":"wangxy@novastar.tech","password":"123456"}),
+     *    @Request({"name":"xingyuanwang","email":"wangxy@novastar.tech","password":"123456"}),
      *    @Response(200, body={
      *     "data":
      *     {
@@ -198,6 +198,17 @@ class UserController extends ApiController
      * @param UserRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
+     *
+     * @Put("/user/update/4")
+     * @Versions({"v1"})
+     * @Request({"password":"1234567"})
+     * @Response(200, body={
+     *     "data":
+     *     {
+     *         "message":1
+     *     },
+     *     "code":200
+     * })
      */
     public function update(UserRequest $request,$id)
     {

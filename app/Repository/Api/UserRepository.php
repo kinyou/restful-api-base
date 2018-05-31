@@ -65,7 +65,7 @@ class UserRepository {
     {
         $this->user->findOrFail($id);
 
-        return $this->user->update($data);
+        return $this->user->where(['id'=>$id])->update($data);
     }
 
 

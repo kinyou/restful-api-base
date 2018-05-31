@@ -35,6 +35,7 @@ $api->version('v1', [
 
 	$api->get('user/{id}','UserController@show');
 	$api->post('user/register','UserController@store');
+	$api->put('user/update/{id}','UserController@update');
 });
 
 //限流测试路由
