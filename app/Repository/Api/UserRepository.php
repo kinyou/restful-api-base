@@ -65,7 +65,15 @@ class UserRepository {
     {
         $this->user->findOrFail($id);
 
-        return $this->user->where(['id'=>$id])->update($data);
+        $fillable = $this->user->getFillable();
+
+        $filll = [];
+
+        foreach($fillable as $field) {
+            if (array_key_exists($field,$data)) $filll[$field] = $data[$field];
+        }
+        
+        return $this->user->where(['id'=>$id])->update($filll);
     }
 
     /**
