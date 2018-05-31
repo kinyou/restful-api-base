@@ -88,4 +88,36 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(200)->assertSeeText('No query results for model');
     }
+
+    /**
+     * @test
+     */
+    public function use_register_success()
+    {
+        $response = $this->json('POST','/api/user/register',['name'=>'maogou','password'=>'123456','email'=>'kinyou_xy@126.com']);
+
+        $response->assertStatus(200)->assertSeeText('maogou');
+    }
+
+    /**
+     * @test
+     */
+    public function update_user_success()
+    {
+        $response = $this->withHeaders(['Authorization'=>'Bearer ' . $this->token])
+            ->json('PUT','/api/user/update/' . $this->user->id . '?aa=bb',['password'=>'1234567']);
+
+        $response->assertStatus(200)->assertSeeText('"message":1');
+    }
+
+    /**
+     * @test
+     */
+    public function destroy_user_success()
+    {
+        $response = $this->withHeaders(['Authorization'=>'Bearer ' . $this->token])
+            ->json('DELETE','/api/user/destroy/' . $this->user->id);
+
+        $response->assertStatus(200)->assertSeeText('"message":1');
+    }
 }

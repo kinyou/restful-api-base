@@ -23,7 +23,7 @@ class UserController extends ApiController
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
-        $this->middleware('auth:api',['except'=>'sayHello']);
+        $this->middleware('auth:api',['except'=>['sayHello','store']]);
     }
 
 
