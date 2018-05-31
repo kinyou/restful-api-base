@@ -217,9 +217,25 @@ class UserController extends ApiController
         return $this->respondWithSuccess($result);
     }
 
+    /**
+     * 删除用户
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @Delete("/user/destroy/4")
+     * @Versions({"v1"})
+     * @Request({})
+     * @Response(200, body={
+     *     "data":
+     *     {
+     *         "message":1
+     *     },
+     *     "code":200
+     * })
+     */
     public function destroy($id)
     {
-        logger($id);
         $result = $this->userService->destroy($id);
 
         return $this->respondWithSuccess($result);
