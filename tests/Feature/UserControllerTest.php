@@ -14,6 +14,17 @@ class UserControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
+    protected $user;
+    protected $token;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->user = factory(User::class)->create();
+        $this->token = Auth::guard('api')->fromUser($this->user);
+
+    }
+
     /**
      * 测试api接口是否正确
      *
@@ -35,13 +46,10 @@ class UserControllerTest extends TestCase
      */
     public function user_list()
     {
-        $user = factory(User::class)->create();
-        $token = Auth::guard('api')->fromUser($user);
-
-        $response = $this->withHeaders(['Authorization'=>'Bearer ' . $token])
+        $response = $this->withHeaders(['Authorization'=>'Bearer ' . $this->token])
             ->json('GET','/api/user');
 
-        $response->assertStatus(200)->assertSeeText($user->name);
+        $response->assertStatus(200)->assertSeeText($this->user->name);
     }
 
     /**
@@ -49,16 +57,35 @@ class UserControllerTest extends TestCase
      */
     public function rate_limit_request()
     {
-        $user = factory(User::class)->create();
-        $token = Auth::guard('api')->fromUser($user);
-
         for($i=0;$i<4;$i++) {
-            $response = $this->withHeaders(['Authorization'=>'Bearer ' . $token])
+            $response = $this->withHeaders(['Authorization'=>'Bearer ' . $this->token])
                 ->json('GET','/api/limit');
         }
         //RateLimitExceededException
 
         $this->assertInstanceOf(RateLimitExceededException::class,new RateLimitExceededException());
 
+    }
+
+    /**
+     * @test
+     */
+    public function use_id_find_user_success()
+    {
+        $response = $this->withHeaders(['Authorization'=>'Bearer ' . $this->token])
+            ->json('GET','/api/user/' . $this->user->id);
+
+        $response->assertStatus(200)->assertSeeText($this->user->name);
+    }
+
+    /**
+     * @test
+     */
+    public function use_id_find_user_fail()
+    {
+        $response = $this->withHeaders(['Authorization'=>'Bearer ' . $this->token])
+            ->json('GET','/api/user/' . ($this->user->id + 1000));
+
+        $response->assertStatus(200)->assertSeeText('No query results for model');
     }
 }
