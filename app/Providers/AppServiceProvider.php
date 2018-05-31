@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Exceptions\RestfulException;
+use Dingo\Api\Exception\RateLimitExceededException;
 use Dingo\Api\Exception\ValidationHttpException;
 use Dingo\Api\Facade\API;
 use Illuminate\Auth\AuthenticationException;
@@ -21,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //测试和开发环境的sql语句调试
         if (app()->environment() != 'production') {
             logger('==================== URL: ' . request()->fullUrl() . ' ====================');
             DB::listen(function(QueryExecuted $queryExecuted) {
@@ -30,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
                 logger(vsprintf($executeSql,array_map([$pdo,'quote'],$bindings)));
             });
         }
+
         //更改默认的dingo/api的模型未找到500变为404
         API::error(function(ModelNotFoundException $modelNotFoundException){
             return $this->respondWithError($modelNotFoundException->getMessage(),Response::HTTP_NOT_FOUND);
@@ -43,6 +46,11 @@ class AppServiceProvider extends ServiceProvider
         //更改默认的dingo/api的未登录请求为403
         API::error(function(AuthenticationException $authenticationException){
             return $this->respondWithError($authenticationException->getMessage(),Response::HTTP_FORBIDDEN);
+        });
+
+        //更改默认的dingo/api的限流请求为429
+        API::error(function(RateLimitExceededException $rateLimitExceededException){
+            return $this->respondWithError($rateLimitExceededException->getMessage(),Response::HTTP_TOO_MANY_REQUESTS);
         });
 
         //注册统一接管用户自定义的响应
